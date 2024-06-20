@@ -4,6 +4,7 @@ const login = require('./Route/login')
 const pick = require('./Route/picked')
 const user = require('./Route/user')
 //miiddleware
+app.use(cors())
 app.use(express.json())
 app.use('/',login)
 app.use('/',pick)
