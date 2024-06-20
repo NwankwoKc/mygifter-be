@@ -3,6 +3,7 @@ const app = express()
 const login = require('./Route/login')
 const pick = require('./Route/picked')
 const user = require('./Route/user')
+const cors = requuire('cors')
 //miiddleware
 app.use(cors())
 app.use(express.json())
