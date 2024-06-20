@@ -4,22 +4,28 @@ const { where } = require('sequelize');
 
 
 exports.picked = asyncwrap(async (req,res,next)=>{
-    const userId = req.body.userid;
+    const userId = req.body.code;
     const picked = req.body.pickedid;
 
     const user = await userdb.findOne({
         where:{
-            userid:userId
+            code:userId
         },
         attributes:['picked','uid']
     })
     if(user){
-        user.picked = picked;
-        user.save()
+        const users = await userdb.findOne({
+            where:{
+                code:picked
+            },
+            attributes:['picked','uid']
+        })
+        users.picked = userId;
+        users.save()
     }
     const pc = await userdb.findOne({
         where:{
-            userid:picked
+            code:picked
         }
     })
     res.status(200).json({

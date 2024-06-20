@@ -11,8 +11,8 @@ const user = db.define('user',{
         primaryKey: true,
         allowNull: false
     },
-    userid:{
-    type: datatypes.INTEGER,
+    code:{
+    type: datatypes.STRING,
     allowNull: false
     },
     name:{

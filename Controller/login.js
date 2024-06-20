@@ -9,43 +9,43 @@ exports.login = asyncwrapper(async (req,res,next)=>{
 
     let auth = await db.findOne({
         where:{
-            userid: body.userid
-        },attributes:['userid','picked']
+            code: body.code
+        },attributes:['code','picked']
     })
     if(!auth){
         return res.status(401).json({
             message:'userID does not exist'
         })
     }
-    const userId = auth.getDataValue('userid')
-    const pc = auth.getDataValue('picked');
-    
-    //if the individual has already picked before
-    if(pc !==null){
-        const dt = await db.findOne({
-            where:{
-                picked:pc
-            }
-        })
+
+    let ck = await db.findOne({
+        where:{
+            picked:body.code
+        },attributes:['code','picked','name']
+    })
+  
+    if(ck){
         return res.status(200).json({
-            data:dt
+            data:ck
         })
     }
-
     //if the individual has not picked at all it gets all the users that have not been picked 
     let findall = await db.findAll({
         where:{
             picked:{
                 [Op.eq]: null,
             },
-            userid:{
-                [Op.ne]:userId
+            code:{
+                [Op.ne]:body.code
+            },
+            role:{
+                [Op.ne]:'Admin'
             }
         }
     })
 
     res.status(200).json({
-        uid:body.userid,
+        uid:body.code,
         data:findall
     })
 })
