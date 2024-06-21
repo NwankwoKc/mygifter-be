@@ -2,7 +2,9 @@ const asyncwrapper = require('../Utility/asyncwrapper')
 const db = require('../Model/user');
 const { where, Op } = require('sequelize');
 const { picked } = require('./pick');
-
+const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv')
+dotenv.config()
 
 exports.login = asyncwrapper(async (req,res,next)=>{
     const body = req.body;
@@ -43,7 +45,13 @@ exports.login = asyncwrapper(async (req,res,next)=>{
             }
         }
     })
-
+    const payload = {
+        code:body.code
+    }
+    const token = jwt.sign(payload,process.env.SECRETEKEY,{
+        expiresIn:'1h'
+    })
+    res.setHeader('Authorization',token)
     res.status(200).json({
         uid:body.code,
         data:findall

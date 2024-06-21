@@ -11,6 +11,7 @@ exports.getuser = asyncwrap(async (req,res,next)=>{
 
 exports.postuser = asyncwrap( async (req,res,next)=>{
     const body = req.body
+    body.role = 'User'
     await userdb.create(body)
     res.status(200).json({
         message:'success'
