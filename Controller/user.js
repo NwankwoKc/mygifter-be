@@ -3,40 +3,51 @@ const userdb = require('../Model/user');
 const asyncwrap = require('../Utility/asyncwrapper')
 
 exports.getuser = asyncwrap(async (req,res,next)=>{
-    const data = await userdb.findAll();
+    const user = await userdb.findAll();
     res.status(200).json({
-        data:data
+        success:true,
+        data:{
+            user
+        }
     })
-})
+}) 
 
 exports.postuser = asyncwrap( async (req,res,next)=>{
     const body = req.body
     body.role = 'User'
     await userdb.create(body)
+    const user = await userdb.findAll()
     res.status(200).json({
-        message:'success'
+        success:true,
+        data:{
+            user
+        }
     })
 })
 
 exports.edituser = asyncwrap(async(req,res,next)=>{
     const body = req.body;
     const id = req.params.id
-    const user = await userdb.findOne({
+    const users = await userdb.findOne({
         where:{
             uid:id
         },
         attributes:['name','code','uid']
     })
     if(body.name){
-        user.name = body.name;
+        users.name = body.name;
     }
     if(body.code){
-        user.code = body.code;
+        users.code = body.code;
     }
+    const user = await userdb.findAll()
 
     await user.save()
     res.status(200).json({
-        message:"success"
+        success:true,
+        data:{
+            user
+        }
     })
 })
 
@@ -47,7 +58,11 @@ exports.delete = asyncwrap(async(req,res,next)=>{
             uid:id
         }
     })
+    const user = await userdb.findAll()
     res.status(200).json({
-        message:"success"
+        success:true,
+        data:{
+            user
+        }
     })
 })
