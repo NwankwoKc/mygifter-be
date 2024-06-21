@@ -29,7 +29,7 @@ exports.picked = asyncwrap(async (req,res,next)=>{
         }
     })
     res.status(200).json({
-        data:pc,
-        message:'success'
+        users:pc,
+        success:true
     })
 })

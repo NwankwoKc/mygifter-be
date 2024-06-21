@@ -28,7 +28,7 @@ exports.login = asyncwrapper(async (req,res,next)=>{
   
     if(ck){
         return res.status(200).json({
-            data:ck
+            user:ck
         })
     }
     //if the individual has not picked at all it gets all the users that have not been picked 
@@ -54,6 +54,8 @@ exports.login = asyncwrapper(async (req,res,next)=>{
     res.setHeader('Authorization',token)
     res.status(200).json({
         uid:body.code,
-        data:findall
+        users:{
+            findall
+        }
     })
 })
