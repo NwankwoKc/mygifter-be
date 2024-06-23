@@ -46,7 +46,7 @@ exports.login = asyncwrapper(async (req,res,next)=>{
         }
     })
     const payload = {
-        code:body.code
+        code:body.role
     }
     const token = jwt.sign(payload,process.env.SECRETEKEY,{
         expiresIn:'1h'

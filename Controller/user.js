@@ -3,11 +3,21 @@ const userdb = require('../Model/user');
 const asyncwrap = require('../Utility/asyncwrapper')
 
 exports.getuser = asyncwrap(async (req,res,next)=>{
-    const users = await userdb.findAll();
+    const limit = parseInt(req.query.limit) || 10;
+    const page = parseInt(req.query.page) || 1;
+    const offset = (page - 1) * limit;
+
+    const {count,rows} = await userdb.findAll({
+        limit:limit,
+        offset,
+        order: [['uid', 'ASC']]
+    });
     res.status(200).json({
         success:true,
         data:{
-            users
+            rows,
+            count,
+            page
         }
     })
 }) 
